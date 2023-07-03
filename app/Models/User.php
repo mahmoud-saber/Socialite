@@ -22,7 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'provider_id',
-        'dribbble_id'
+        'dribbble_id',
+        'provider'
     ];
 
     /**

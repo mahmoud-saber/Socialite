@@ -9,17 +9,18 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
-    public function login()
+    public function login($provider)
     {
 
-        return Socialite::driver('github')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
-    public function redirect()
+    public function redirect($provider)
     {
 
-        $socialiteuser = Socialite::driver('github')->user();
+        $socialiteuser = Socialite::driver($provider)->user();
         $user = User::updateOrCreate([
+            'provider'=>$provider,
             'provider_id' => $socialiteuser->getId() //check the user exsist or no
         ], [
             'name' => $socialiteuser->getName(),
@@ -32,26 +33,5 @@ class SocialiteController extends Controller
     }
 
 
-    ///////////////////////////////////
-    public function dribbble_login()
-    {
 
-        return Socialite::driver('dribbble')->redirect();
-    }
-
-    public function dribbble_redirect()
-    {
-
-        $socialiteuser = Socialite::driver('dribbble')->user();
-        $user = User::updateOrCreate([
-            'dribbble_id' => $socialiteuser->getId() //check the user exsist or no
-        ], [
-            'name' => $socialiteuser->getName(),
-            'email' => $socialiteuser->getEmail(),
-        ]);
-        //
-            Auth::login($user, true);
-            //retturn dashboard
-            return to_route('dashboard');
-    }
 }
